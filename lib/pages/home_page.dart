@@ -68,6 +68,16 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold
                           ),
                         ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () async {
+                            await DatabaseMethod().deleteStudent(ds.id);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Icon(Icons.delete, color: Colors.black, size: 25),
+                          ),
+                        )
                       ],
                     ),
                     SizedBox(height: 5.0,),

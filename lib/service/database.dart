@@ -15,4 +15,8 @@ class DatabaseMethod {
   Future updateAttendance(String attendancecase,  String id) async{
     return await FirebaseFirestore.instance.collection("Students").doc(id).update({attendancecase: true});
   }
+
+  Future deleteStudent(String id) async{
+    return await FirebaseFirestore.instance.collection("Students").doc(id).delete();
+  }
 }
