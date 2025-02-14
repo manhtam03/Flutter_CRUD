@@ -123,20 +123,25 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold
                           ),
                         ),
-                        ds['Present'] == false ? Container(
-                          width: 37,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'P',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
+                        ds['Present'] == false ? GestureDetector(
+                          onTap: () async {
+                            await DatabaseMethod().updateAttendance("Present", ds.id);
+                          },
+                          child: Container(
+                            width: 37,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Center(
+                              child: Text(
+                                'P',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
                           ),
@@ -159,20 +164,25 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         SizedBox(width: 20,),
-                        ds['Absent'] == false ? Container(
-                          width: 37,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'A',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
+                        ds['Absent'] == false ? GestureDetector(
+                          onTap: () async {
+                            await DatabaseMethod().updateAttendance("Absent", ds.id);
+                          },
+                          child: Container(
+                            width: 37,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Center(
+                              child: Text(
+                                'A',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
                           ),
