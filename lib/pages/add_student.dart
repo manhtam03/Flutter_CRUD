@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/pages/home_page.dart';
+import 'package:flutter_crud/service/database.dart';
+import 'package:random_string/random_string.dart';
 
 class AddStudent extends StatefulWidget {
   const AddStudent({super.key});
@@ -9,15 +11,10 @@ class AddStudent extends StatefulWidget {
 }
 
 class _AddStudentState extends State<AddStudent> {
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController ageController = new TextEditingController();
-  TextEditingController idController = new TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +26,9 @@ class _AddStudentState extends State<AddStudent> {
             Row(
               children: [
                 GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  },
                     child: Icon(Icons.arrow_back_ios_new_outlined)
                 ),
                 SizedBox(width: 85,),
@@ -114,21 +114,47 @@ class _AddStudentState extends State<AddStudent> {
               ),
             ),
             SizedBox(height: 25,),
-            Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                width: 150,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: Center(
-                  child: Text(
-                    'Add ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold
+            GestureDetector(
+              onTap: () async {
+                if (nameController.text != "" && ageController.text != "" && idController.text != ""){
+                  String addID = randomAlphaNumeric(10);
+                  Map<String, dynamic> studentInfoMap = {
+                    'Name': nameController.text,
+                    'Age': ageController.text,
+                    'ID': idController.text,
+                    'Absent': false,
+                    'Present': false
+                  };
+                  await DatabaseMethod().addStudent(studentInfoMap, addID).then((value){
+                    nameController.text="";
+                    ageController.text="";
+                    idController.text="";
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text(
+                        'Student data has been uploaded!',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ));
+                  });
+                }
+              },
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Add ',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
                 ),
