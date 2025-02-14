@@ -7,4 +7,8 @@ class DatabaseMethod {
         .doc(id)
         .set(studentInfoMap);
   }
+
+  Future<Stream<QuerySnapshot>> getStudent() async {
+    return await FirebaseFirestore.instance.collection("Students").snapshots();
+  }
 }

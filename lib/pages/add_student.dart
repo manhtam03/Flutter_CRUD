@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_crud/pages/home_page.dart';
 import 'package:flutter_crud/service/database.dart';
 import 'package:random_string/random_string.dart';
 
@@ -27,7 +26,7 @@ class _AddStudentState extends State<AddStudent> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.pop(context);
                   },
                     child: Icon(Icons.arrow_back_ios_new_outlined)
                 ),

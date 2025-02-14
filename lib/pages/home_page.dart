@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_crud/service/database.dart';
 import 'add_student.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,200 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Stream? studentStream;
+
+  @override
+  void initState() {
+    getOnTheLoad();
+    super.initState();
+  }
+
+  getOnTheLoad() async {
+    studentStream = await DatabaseMethod().getStudent();
+    setState(() {
+
+    });
+  }
+
+  Widget showStudentList(){
+    return StreamBuilder(stream: studentStream, builder: (context, AsyncSnapshot snapshot){
+      return snapshot.hasData ? ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.zero,
+        itemCount: snapshot.data.docs.length,
+        itemBuilder: (BuildContext context, int index){
+          DocumentSnapshot ds = snapshot.data.docs[index];
+          return Container(
+            margin: EdgeInsets.only(bottom: 15),
+            child: Material(
+              elevation: 3.0,
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Student Name : ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                        Text(
+                          ds['Name'],
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.0,),
+                    Row(
+                      children: [
+                        Text(
+                          'ID : ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                        Text(
+                          ds['ID'],
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.0,),
+                    Row(
+                      children: [
+                        Text(
+                          'Age : ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                        Text(
+                            ds['Age'],
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.0,),
+                    Row(
+                      children: [
+                        Text(
+                          'Attendance : ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        ds['Present'] == false ? Container(
+                          width: 37,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Center(
+                            child: Text(
+                              'P',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ) : Container(
+                          width: 37,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Center(
+                            child: Text(
+                              'P',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        ds['Absent'] == false ? Container(
+                          width: 37,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Center(
+                            child: Text(
+                              'A',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ) : Container(
+                          width: 37,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Center(
+                            child: Text(
+                              'A',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ) : Container();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,135 +244,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: 30.0,),
-            Material(
-              elevation: 3.0,
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Student Name : ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                        Text(
-                          'Manh Tam',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5.0,),
-                    Row(
-                      children: [
-                        Text(
-                          'ID : ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                        Text(
-                          '01',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5.0,),
-                    Row(
-                      children: [
-                        Text(
-                          'Age : ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
-                          ),
-                        ),
-                        Text(
-                          '16',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5.0,),
-                    Row(
-                      children: [
-                        Text(
-                          'Attendance : ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        Container(
-                          width: 37,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'P',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 20,),
-                        Container(
-                          width: 37,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'A',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
+            showStudentList(),
           ],
         ),
       ),
