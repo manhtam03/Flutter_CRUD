@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'add_student.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -12,7 +14,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddStudent()));
+        },
         backgroundColor: Colors.blue,
         child: Icon(
           Icons.add,
